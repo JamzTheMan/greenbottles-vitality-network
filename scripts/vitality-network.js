@@ -1,3 +1,8 @@
+import updateVitalityPool from './update-vitality-pool.js';
+
+
+
+
 const rollHealing = async (actor, points) => {
   const damageRoll = CONFIG.Dice.rolls.find(r => r.name === "DamageRoll");
   const roll = await new damageRoll(`${points}[healing]`).evaluate();
@@ -51,49 +56,72 @@ Hooks.once('ready', () => {
   ui.notifications.info("Greenbottle's Vitality Network | Ready");
 });
 
+
 Hooks.on('combatTurn', (combat, updateData, updateOptions) => {
-  const currentCombatant = combat.combatant;
+  console.log('=== COMBAT TURN HOOK FIRED === ------------------------------------');
+  console.log('Combat object:', combat);
+  console.log('Current turn index:', combat.turn);
+  console.log('Current combatant:', combat.combatant);
+  console.log('Combatant name:', combat.combatant?.name);
+  console.log('All turns:', combat.turns.map(t => t.name));
   
-  // ui.notifications.info("on combat turn hook -- 1");
+  ui.notifications.info(`New turn started -- ${combat.combatant?.name || 'Unknown'}`);
+});
 
-	if (currentCombatant?.isOwner || currentCombatant?.actor?.hasPlayerOwner) {
-		console.log(`player turn started for ${currentCombatant.name}`);
+// Hooks.on('combatTurn', (combat, updateData, updateOptions) => {
+//   // const combat = game.combat;
+//   ui.notifications.info(`new turn started -- ${game.combat.turns[game.combat.turn].name}`);
 
-    let player = currentCombatant.actor;
+
+//   // const currentCombatant = combat.combatant;
+  
+//   // console.log(game.combat.turns[game.combat.turn].name, "current turn holder")
+//   // console.log(currentCombatant, "current combatant")
+
+//   // updateVitalityPool(currentCombatant);
+
+//   // if (currentCombatant?.isOwner || currentCombatant?.actor?.hasPlayerOwner) {
+// 	// 	console.log(`player turn started for ${currentCombatant.name}`);
+
+//   //   let player = currentCombatant.actor;
     
-    // ui.notifications.info("on combat turn hook -- 2 - inside if ");
+//   //   // ui.notifications.info("on combat turn hook -- 2 - inside if ");
 
-		if (player) {
-			let level = player.level;
-			let playerClass = player.class.name;
-			let vitalityNetwork = player.system.resources.vitalityNetwork;
+// 	// 	if (player) {
+// 	// 		let level = player.level;
+// 	// 		let playerClass = player.class.name;
+// 	// 		let vitalityNetwork = player.system.resources.vitalityNetwork;
 
-			let newValue = vitalityNetwork.value;
-      if (level >= 19) {
-        // ui.notifications.info("on combat turn hook -- 3 - >= 19");
-				newValue += 8;
-			}
-      else if (level >= 15) {
-        // ui.notifications.info("on combat turn hook -- 3 - >= 15");
-				newValue += 6;
-			}
-      else {
-        // ui.notifications.info("on combat turn hook -- 3 - >= 1");
-				newValue += 4;
-			}
+// 	// 		let newValue = vitalityNetwork.value;
+//   //     if (level >= 19) {
+//   //       // ui.notifications.info("on combat turn hook -- 3 - >= 19");
+// 	// 			newValue += 8;
+// 	// 		}
+//   //     else if (level >= 15) {
+//   //       // ui.notifications.info("on combat turn hook -- 3 - >= 15");
+// 	// 			newValue += 6;
+// 	// 		}
+//   //     else {
+//   //       // ui.notifications.info("on combat turn hook -- 3 - >= 1");
+// 	// 			newValue += 4;
+// 	// 		}
 
-      if (newValue > vitalityNetwork.max) {
-        // ui.notifications.info("on combat turn hook -- 3d - new value > network max");
-				newValue = vitalityNetwork.max;
-			}
+//   //     if (newValue > vitalityNetwork.max) {
+//   //       // ui.notifications.info("on combat turn hook -- 3d - new value > network max");
+// 	// 			newValue = vitalityNetwork.max;
+// 	// 		}
 
-			// let newValue = player.system.resources.vitalityNetwork.value += 1;
-			player.updateResource('vitalityNetwork', newValue)
+// 	// 		// let newValue = player.system.resources.vitalityNetwork.value += 1;
+// 	// 		player.updateResource('vitalityNetwork', newValue)
 			
-			console.log(player.system.resources.vitalityNetwork.value);
-		}
-	}
-})
+// 	// 		console.log(player.system.resources.vitalityNetwork.value);
+// 	// 	}
+// 	// }
+
+	
+// })
+
+
 
 Hooks.on('createChatMessage', async (message, options, userId) => {
   const item = message.item;
