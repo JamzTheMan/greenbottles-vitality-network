@@ -61,7 +61,13 @@
         "type": "system",
         "compatibility": {
           "minimum": "6.0.0"
-        }
+        },
+        {
+        "id": "sf2e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "0.0.4"
+        },
       }
     ],
     "requires": [
